@@ -7,6 +7,12 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { HomePage } from './globals/HomePage'
+import { AboutPage } from './globals/AboutPage'
+import { WorksPage } from './globals/WorksPage'
+import { ServicesPage } from './globals/ServicesPage'
+import { SiteSettings } from './globals/SiteSettings'
+import { ContactPage } from './globals/ContactPage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -19,6 +25,19 @@ export default buildConfig({
     },
   },
   collections: [Users, Media],
+  globals: [HomePage, AboutPage, WorksPage, ServicesPage, SiteSettings, ContactPage],
+  cors: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
+  ],
+  csrf: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

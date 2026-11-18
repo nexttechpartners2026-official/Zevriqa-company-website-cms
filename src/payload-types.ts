@@ -84,11 +84,25 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    homepage: Homepage;
+    aboutpage: Aboutpage;
+    workspage: Workspage;
+    servicespage: Servicespage;
+    'site-settings': SiteSetting;
+    contactpage: Contactpage;
+  };
+  globalsSelect: {
+    homepage: HomepageSelect<false> | HomepageSelect<true>;
+    aboutpage: AboutpageSelect<false> | AboutpageSelect<true>;
+    workspage: WorkspageSelect<false> | WorkspageSelect<true>;
+    servicespage: ServicespageSelect<false> | ServicespageSelect<true>;
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    contactpage: ContactpageSelect<false> | ContactpageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -122,7 +136,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -130,6 +144,7 @@ export interface User {
   resetPasswordExpiration?: string | null;
   salt?: string | null;
   hash?: string | null;
+  resetPasswordRequestedAt?: string | null;
   loginAttempts?: number | null;
   lockUntil?: string | null;
   sessions?:
@@ -147,7 +162,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -166,7 +181,7 @@ export interface Media {
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -183,20 +198,20 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +221,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +244,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -247,6 +262,7 @@ export interface UsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  resetPasswordRequestedAt?: T;
   loginAttempts?: T;
   lockUntil?: T;
   sessions?:
@@ -314,6 +330,1055 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage".
+ */
+export interface Homepage {
+  id: number;
+  banner?: {
+    type?: ('video' | 'singleImage' | 'carousel' | 'none') | null;
+    videoUrl?: string | null;
+    singleImage?: {
+      image?: (number | null) | Media;
+      imageUrl?: string | null;
+      title?: string | null;
+      subtitle?: string | null;
+    };
+    carouselSlides?:
+      | {
+          image?: (number | null) | Media;
+          imageUrl?: string | null;
+          title?: string | null;
+          subtitle?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  hero?: {
+    kicker?: string | null;
+    title?: string | null;
+    description?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
+    image?: (number | null) | Media;
+    imageAlt?: string | null;
+  };
+  trustedBy?: {
+    label?: string | null;
+    companies?:
+      | {
+          name: string;
+          logo?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  about?: {
+    kicker?: string | null;
+    title?: string | null;
+    description?: string | null;
+    linkText?: string | null;
+    linkUrl?: string | null;
+    image?: (number | null) | Media;
+    imageAlt?: string | null;
+  };
+  features?: {
+    kicker?: string | null;
+    title?: string | null;
+    services?:
+      | {
+          icon?: ('Code' | 'Cloud' | 'Plug' | 'Cpu' | 'Database' | 'Shield' | 'Smartphone' | 'Globe') | null;
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  solutions?: {
+    kicker?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  sectors?: {
+    kicker?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          title: string;
+          image?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  tools?: {
+    kicker?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          name: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  process?: {
+    kicker?: string | null;
+    title?: string | null;
+    steps?:
+      | {
+          num: string;
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  flawless?: {
+    subtitle?: string | null;
+    title?: string | null;
+    image?: (number | null) | Media;
+    features?:
+      | {
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  stats?: {
+    items?:
+      | {
+          number: string;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  testimonials?: {
+    subtitle?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          quote: string;
+          name: string;
+          title: string;
+          image?: (number | null) | Media;
+          avatarUrl?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  blog?: {
+    kicker?: string | null;
+    title?: string | null;
+    posts?:
+      | {
+          title: string;
+          date?: string | null;
+          image?: (number | null) | Media;
+          imageUrl?: string | null;
+          link?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  faq?: {
+    subtitle?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          q: string;
+          a: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  cta?: {
+    title?: string | null;
+    desc?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutpage".
+ */
+export interface Aboutpage {
+  id: number;
+  hero?: {
+    title?: string | null;
+    subtitle?: string | null;
+  };
+  empowering?: {
+    kicker?: string | null;
+    title?: string | null;
+    desc1?: string | null;
+    desc2?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
+    image?: (number | null) | Media;
+    imageUrl?: string | null;
+    imageAlt?: string | null;
+  };
+  journey?: {
+    kicker?: string | null;
+    title?: string | null;
+    desc?: string | null;
+    milestones?:
+      | {
+          year: string;
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  mission?: {
+    kicker?: string | null;
+    title?: string | null;
+    missionTitle?: string | null;
+    missionDesc?: string | null;
+    visionTitle?: string | null;
+    visionDesc?: string | null;
+    image?: (number | null) | Media;
+    imageUrl?: string | null;
+    imageAlt?: string | null;
+  };
+  values?: {
+    kicker?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          icon?:
+            | ('Lightbulb' | 'Shield' | 'Users' | 'Gem' | 'Handshake' | 'TrendingUp' | 'Heart' | 'Zap' | 'CheckCircle')
+            | null;
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  different?: {
+    kicker?: string | null;
+    title?: string | null;
+    desc?: string | null;
+    items?:
+      | {
+          icon?: ('Code' | 'Settings' | 'User' | 'Lock' | 'Shield' | 'Zap' | 'CheckCircle') | null;
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  cta?: {
+    title?: string | null;
+    desc?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workspage".
+ */
+export interface Workspage {
+  id: number;
+  hero?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  categories?:
+    | {
+        title: string;
+        items?:
+          | {
+              title: string;
+              desc: string;
+              tags?:
+                | {
+                    name: string;
+                    id?: string | null;
+                  }[]
+                | null;
+              image?: (number | null) | Media;
+              imageUrl?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  cta?: {
+    title?: string | null;
+    desc?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicespage".
+ */
+export interface Servicespage {
+  id: number;
+  hero?: {
+    title?: string | null;
+    desc?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
+  };
+  overview?: {
+    kicker?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          icon?:
+            | (
+                | 'Monitor'
+                | 'Smartphone'
+                | 'LayoutDashboard'
+                | 'Search'
+                | 'Shield'
+                | 'Zap'
+                | 'Cloud'
+                | 'ShoppingCart'
+                | 'Lock'
+                | 'Briefcase'
+                | 'Key'
+                | 'PenTool'
+              )
+            | null;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  details?: {
+    items?:
+      | {
+          title: string;
+          kicker: string;
+          desc: string;
+          features?:
+            | {
+                name: string;
+                id?: string | null;
+              }[]
+            | null;
+          image?: (number | null) | Media;
+          imageUrl?: string | null;
+          imagePosition?: ('right' | 'left') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  techStack?: {
+    kicker?: string | null;
+    title?: string | null;
+    categories?:
+      | {
+          title: string;
+          tools?:
+            | {
+                name: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  process?: {
+    kicker?: string | null;
+    title?: string | null;
+    steps?:
+      | {
+          num: string;
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  domainExpertise?: {
+    kicker?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          title: string;
+          image?: (number | null) | Media;
+          imageUrl?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  statsBanner?: {
+    kicker?: string | null;
+    title?: string | null;
+    features?:
+      | {
+          icon?: ('Shield' | 'Rocket' | 'Users' | 'History' | 'Zap' | 'CheckCircle') | null;
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  caseStudies?: {
+    kicker?: string | null;
+    title?: string | null;
+    items?:
+      | {
+          kicker: string;
+          title: string;
+          desc: string;
+          image?: (number | null) | Media;
+          imageUrl?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  faq?: {
+    title?: string | null;
+    faqs?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  cta?: {
+    title?: string | null;
+    desc?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  brandDescription?: string | null;
+  copyright?: string | null;
+  tagline?: string | null;
+  email?: string | null;
+  phoneNumbers?:
+    | {
+        number: string;
+        id?: string | null;
+      }[]
+    | null;
+  whatsappNumber?: string | null;
+  whatsappMessage?: string | null;
+  address?: string | null;
+  googleMapsUrl?: string | null;
+  instagram?: string | null;
+  twitter?: string | null;
+  facebook?: string | null;
+  linkedin?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactpage".
+ */
+export interface Contactpage {
+  id: number;
+  hero?: {
+    title?: string | null;
+    desc?: string | null;
+  };
+  intro?: {
+    kicker?: string | null;
+    title?: string | null;
+    desc?: string | null;
+  };
+  form?: {
+    nameLabel?: string | null;
+    namePlaceholder?: string | null;
+    emailLabel?: string | null;
+    emailPlaceholder?: string | null;
+    detailsLabel?: string | null;
+    detailsPlaceholder?: string | null;
+    buttonText?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "homepage_select".
+ */
+export interface HomepageSelect<T extends boolean = true> {
+  banner?:
+    | T
+    | {
+        type?: T;
+        videoUrl?: T;
+        singleImage?:
+          | T
+          | {
+              image?: T;
+              imageUrl?: T;
+              title?: T;
+              subtitle?: T;
+            };
+        carouselSlides?:
+          | T
+          | {
+              image?: T;
+              imageUrl?: T;
+              title?: T;
+              subtitle?: T;
+              id?: T;
+            };
+      };
+  hero?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        description?: T;
+        buttonText?: T;
+        buttonLink?: T;
+        image?: T;
+        imageAlt?: T;
+      };
+  trustedBy?:
+    | T
+    | {
+        label?: T;
+        companies?:
+          | T
+          | {
+              name?: T;
+              logo?: T;
+              id?: T;
+            };
+      };
+  about?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        description?: T;
+        linkText?: T;
+        linkUrl?: T;
+        image?: T;
+        imageAlt?: T;
+      };
+  features?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        services?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  solutions?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  sectors?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              image?: T;
+              id?: T;
+            };
+      };
+  tools?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              name?: T;
+              id?: T;
+            };
+      };
+  process?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        steps?:
+          | T
+          | {
+              num?: T;
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  flawless?:
+    | T
+    | {
+        subtitle?: T;
+        title?: T;
+        image?: T;
+        features?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  stats?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              number?: T;
+              label?: T;
+              id?: T;
+            };
+      };
+  testimonials?:
+    | T
+    | {
+        subtitle?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              quote?: T;
+              name?: T;
+              title?: T;
+              image?: T;
+              avatarUrl?: T;
+              id?: T;
+            };
+      };
+  blog?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        posts?:
+          | T
+          | {
+              title?: T;
+              date?: T;
+              image?: T;
+              imageUrl?: T;
+              link?: T;
+              id?: T;
+            };
+      };
+  faq?:
+    | T
+    | {
+        subtitle?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              q?: T;
+              a?: T;
+              id?: T;
+            };
+      };
+  cta?:
+    | T
+    | {
+        title?: T;
+        desc?: T;
+        buttonText?: T;
+        buttonLink?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aboutpage_select".
+ */
+export interface AboutpageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        subtitle?: T;
+      };
+  empowering?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        desc1?: T;
+        desc2?: T;
+        buttonText?: T;
+        buttonLink?: T;
+        image?: T;
+        imageUrl?: T;
+        imageAlt?: T;
+      };
+  journey?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        desc?: T;
+        milestones?:
+          | T
+          | {
+              year?: T;
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  mission?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        missionTitle?: T;
+        missionDesc?: T;
+        visionTitle?: T;
+        visionDesc?: T;
+        image?: T;
+        imageUrl?: T;
+        imageAlt?: T;
+      };
+  values?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  different?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        desc?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  cta?:
+    | T
+    | {
+        title?: T;
+        desc?: T;
+        buttonText?: T;
+        buttonLink?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "workspage_select".
+ */
+export interface WorkspageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  categories?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              tags?:
+                | T
+                | {
+                    name?: T;
+                    id?: T;
+                  };
+              image?: T;
+              imageUrl?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  cta?:
+    | T
+    | {
+        title?: T;
+        desc?: T;
+        buttonText?: T;
+        buttonLink?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "servicespage_select".
+ */
+export interface ServicespageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        desc?: T;
+        buttonText?: T;
+        buttonLink?: T;
+      };
+  overview?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              icon?: T;
+              label?: T;
+              id?: T;
+            };
+      };
+  details?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              title?: T;
+              kicker?: T;
+              desc?: T;
+              features?:
+                | T
+                | {
+                    name?: T;
+                    id?: T;
+                  };
+              image?: T;
+              imageUrl?: T;
+              imagePosition?: T;
+              id?: T;
+            };
+      };
+  techStack?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        categories?:
+          | T
+          | {
+              title?: T;
+              tools?:
+                | T
+                | {
+                    name?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  process?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        steps?:
+          | T
+          | {
+              num?: T;
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  domainExpertise?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              title?: T;
+              image?: T;
+              imageUrl?: T;
+              id?: T;
+            };
+      };
+  statsBanner?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        features?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  caseStudies?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        items?:
+          | T
+          | {
+              kicker?: T;
+              title?: T;
+              desc?: T;
+              image?: T;
+              imageUrl?: T;
+              id?: T;
+            };
+      };
+  faq?:
+    | T
+    | {
+        title?: T;
+        faqs?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+      };
+  cta?:
+    | T
+    | {
+        title?: T;
+        desc?: T;
+        buttonText?: T;
+        buttonLink?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  brandDescription?: T;
+  copyright?: T;
+  tagline?: T;
+  email?: T;
+  phoneNumbers?:
+    | T
+    | {
+        number?: T;
+        id?: T;
+      };
+  whatsappNumber?: T;
+  whatsappMessage?: T;
+  address?: T;
+  googleMapsUrl?: T;
+  instagram?: T;
+  twitter?: T;
+  facebook?: T;
+  linkedin?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contactpage_select".
+ */
+export interface ContactpageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        title?: T;
+        desc?: T;
+      };
+  intro?:
+    | T
+    | {
+        kicker?: T;
+        title?: T;
+        desc?: T;
+      };
+  form?:
+    | T
+    | {
+        nameLabel?: T;
+        namePlaceholder?: T;
+        emailLabel?: T;
+        emailPlaceholder?: T;
+        detailsLabel?: T;
+        detailsPlaceholder?: T;
+        buttonText?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
