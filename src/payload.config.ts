@@ -27,12 +27,18 @@ export default buildConfig({
   collections: [Users, Media],
   globals: [HomePage, AboutPage, WorksPage, ServicesPage, SiteSettings, ContactPage],
   cors: [
+    'https://cms.zevriqa.in',
+    'https://zevriqa.in',
+    'https://www.zevriqa.in',
     'http://localhost:3000',
     'http://localhost:3001',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
   ],
   csrf: [
+    'https://cms.zevriqa.in',
+    'https://zevriqa.in',
+    'https://www.zevriqa.in',
     'http://localhost:3000',
     'http://localhost:3001',
     'http://127.0.0.1:3000',
